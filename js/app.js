@@ -29,6 +29,13 @@ function newGame() {
 	$("#feedback").text("Make your Guess!");
   // Clears past guesses
   $("#guessList").empty();
+	// Shows inputs
+	$("input").show();
+	// resets guess count
+	count = 0;
+	$("#count").text("0");
+	// resets placeholder
+	$("#userGuess").attr("placeholder", "Enter your Guess");
 }
 // Form submission handler
 $("form").submit(function() {
@@ -61,8 +68,10 @@ $("form").submit(function() {
 		}
 		else {
 			console.log("guess = secretNum");
-			$("#feedback").text("You Win!");
+			$("#feedback").text("You Win! Click New Game to start over");
 			countUpdate();
+			$("input").hide();
+			count = 0;
 		}
 	}
 	else {
