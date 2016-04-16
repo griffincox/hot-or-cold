@@ -2,6 +2,7 @@
 var secretNum = 0;
 var count = 0;
 var guess = $("#userGuess").val();
+var previousGuesses = [];
 $(document).ready(function() {
 	// /* Begins a new game on page load */
 	newGame();
@@ -36,12 +37,24 @@ function newGame() {
 	$("#count").text("0");
 	// resets placeholder
 	$("#userGuess").attr("placeholder", "Enter your Guess");
+	// resets previous guesses array
+	previousGuesses = [];
 }
 // Form submission handler
 $("form").submit(function() {
 	guess = $("#userGuess").val();
 	console.log("secretNum is " + secretNum);
 	console.log("user guessed " + guess);
+	// // Creates array of previous guesses
+	// previousGuesses.push(guess);
+	// console.log("previous guesses: " + previousGuesses);
+	// // Checks if guess was previously guessed
+	// if (inArray(guess, previousGuesses) != -1) {
+	// 		newguess();
+	// else {
+	// 	invalidEntry();
+	// }
+	// Calculuates difference between guess and the secretNum
 	var guessDifference = Math.abs((guess - secretNum));
 	console.log("guessDifference was " + guessDifference);
 	// Checks if guess is an integer 1-100
@@ -75,9 +88,7 @@ $("form").submit(function() {
 		}
 	}
 	else {
-		$("#feedback").text("Guess must be an integer between 1-100");
-		$("#userGuess").val("");
-		$("#userGuess").attr("placeholder", "");
+		invalidEntry();
 	}
 	return false;
 });
@@ -91,4 +102,9 @@ function countUpdate() {
 	$("#userGuess").val("");
 	$("#userGuess").attr("placeholder", "");
 	return false;
+}
+function invalidEntry() {
+	$("#feedback").text("Guess must be an integer between 1-100");
+	$("#userGuess").val("");
+	$("#userGuess").attr("placeholder", "");
 }
