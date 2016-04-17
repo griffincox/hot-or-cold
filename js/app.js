@@ -45,53 +45,55 @@ $("form").submit(function() {
 	guess = $("#userGuess").val();
 	console.log("secretNum is " + secretNum);
 	console.log("user guessed " + guess);
-	// // Creates array of previous guesses
-	// previousGuesses.push(guess);
-	// console.log("previous guesses: " + previousGuesses);
-	// // Checks if guess was previously guessed
-	// if (inArray(guess, previousGuesses) != -1) {
-	// 		newguess();
-	// else {
-	// 	invalidEntry();
-	// }
-	// Calculuates difference between guess and the secretNum
-	var guessDifference = Math.abs((guess - secretNum));
-	console.log("guessDifference was " + guessDifference);
-	// Checks if guess is an integer 1-100
+	// Check if guess is 1 <= integer <= 1-100
 	if (isInt(guess) && guess >=1 && guess <= 100) {
-		if (guessDifference >= 40) {
-			console.log("guess more than 40 units away from secretNum");
-			$("#feedback").text("Cold");
-			countUpdate();
-		}
-		else if (guessDifference >= 20) {
-			console.log("guess more than 20 units away from secretNum");
-			$("#feedback").text("Warm");
-			countUpdate();
-		}
-		else if (guessDifference >= 10) {
-			console.log("guess more than 10 units away from secretNum");
-			$("#feedback").text("Hot");
-			countUpdate();
-		}
-		else if (guessDifference >= 1) {
-			console.log("guess more than 1 units away from secretNum");
-			$("#feedback").text("Very Hot");
-			countUpdate();
+		// Check if previous guessed
+		if (previousGuesses.indexOf(guess) == -1) {
+			// Prepend to previousGuesses array
+			previousGuesses.push(guess);
+			console.log("previous guesses: " + previousGuesses);
+				// Calculuate difference between guess and the secretNum
+				var guessDifference = Math.abs((guess - secretNum));
+				console.log("guessDifference was " + guessDifference);
+				if (guessDifference >= 40) {
+					console.log("guess more than 40 units away from secretNum");
+					$("#feedback").text("Cold");
+					countUpdate();
+				}
+				else if (guessDifference >= 20) {
+					console.log("guess more than 20 units away from secretNum");
+					$("#feedback").text("Warm");
+					countUpdate();
+				}
+				else if (guessDifference >= 10) {
+					console.log("guess more than 10 units away from secretNum");
+					$("#feedback").text("Hot");
+					countUpdate();
+				}
+				else if (guessDifference >= 1) {
+					console.log("guess more than 1 units away from secretNum");
+					$("#feedback").text("Very Hot");
+					countUpdate();
+				}
+				else {
+					console.log("guess = secretNum");
+					$("#feedback").text("You Win! Click New Game to start over");
+					countUpdate();
+					$("input").hide();
+					count = 0;
+				}
+			}
+			else {
+				guessedPreviously();
+				return false;
+			}
 		}
 		else {
-			console.log("guess = secretNum");
-			$("#feedback").text("You Win! Click New Game to start over");
-			countUpdate();
-			$("input").hide();
-			count = 0;
+			invalidEntry();
+			return false;
 		}
-	}
-	else {
-		invalidEntry();
-	}
-	return false;
-});
+		return false;
+	});
 function isInt(n) {
 	return n % 1 === 0;
 }
@@ -107,4 +109,11 @@ function invalidEntry() {
 	$("#feedback").text("Guess must be an integer between 1-100");
 	$("#userGuess").val("");
 	$("#userGuess").attr("placeholder", "");
+	return false;
+}
+function guessedPreviously() {
+	$("#feedback").text("You already guessed that number");
+	$("#userGuess").val("");
+	$("#userGuess").attr("placeholder", "");
+	return false;
 }
